@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SkillLedger | Skills Data Infrastructure — Unlock Talent, Build Trust</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            background: #fef9f0;
+        }
+
+        /* hero background with online image */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 30, 60, 0.85), rgba(0, 80, 120, 0.8)), url('https://images.pexels.com/photos/5428830/pexels-photo-5428830.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center 30%;
+            background-attachment: fixed;
+            color: white;
+            overflow: hidden;
+        }
+
+        .particle-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.7;
+            }
+
+            80% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF, #FFD966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            color: #FFB347;
+            background: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            color: #f1f5f9;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #FFB347;
+        }
+
+        .btn-primary {
+            background: #FFB347;
+            color: #0f172a;
+            padding: 0.75rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #ff9f1c;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #FFB347;
+            color: #FFB347;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 179, 71, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 3rem 0 5rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(to right, #FFF9E6, #FFD966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            background: rgba(255, 179, 71, 0.25);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #FFE5B4;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            border: 1px solid rgba(255, 179, 71, 0.4);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #FFB347, #e67e22);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .score-big {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFB347;
+        }
+
+        .trust-badge {
+            background: #0f172a;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.75rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #FFB347;
+            border-radius: 10px;
+        }
+
+        .section-light {
+            background: #ffffff;
+        }
+
+        .section-alt {
+            background: #fef7e8;
+        }
+
+        .section-dark {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-dark .section-title {
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ffecd6;
+            transition: all 0.25s;
+        }
+
+        .feature-card:hover {
+            border-color: #FFB347;
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-dark .feature-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .section-dark .feature-card:hover {
+            border-color: #FFB347;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #FFB347;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: #f1f5f9;
+            border-radius: 2rem;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .section-dark .stats-grid {
+            background: #1e293b;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFB347;
+        }
+
+        /* story image cards grid */
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .story-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .story-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .story-card:hover .story-img {
+            transform: scale(1.03);
+        }
+
+        .story-caption {
+            padding: 1.5rem;
+        }
+
+        .story-caption h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .story-caption p {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .emoji-badge {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .stats-grid {
+                flex-direction: column;
+            }
+
+            .navbar {
+                flex-direction: column;
+            }
+
+            .hero-section {
+                background-attachment: scroll;
+            }
+        }
+
+        .highlight {
+            color: #FFB347;
+            font-weight: 600;
+        }
+
+        .quote {
+            font-style: italic;
+            border-left: 4px solid #FFB347;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero section with online background image -->
+    <section class="hero-section">
+        <div class="particle-bg" id="particleContainer"></div>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Skill<span>Ledger</span></div>
+                <div class="nav-links">
+                    <a href="#">Infrastructure</a>
+                    <a href="#">For TVETs</a>
+                    <a href="#">Employers</a>
+                    <a href="#">Pilot</a>
+                </div>
+                <a href="#" class="btn-primary" id="ctaButton">Request Demo <i class="fas fa-arrow-right"></i></a>
+            </nav>
+
+            <div class="hero">
+                <div class="hero-grid">
+                    <div>
+                        <div class="badge"><i class="fas fa-shield-alt"></i> Skills Data Infrastructure · API-first
+                        </div>
+                        <h1 class="hero-title">Turn learning activity into <span class="highlight">verified Skills
+                                Scores</span></h1>
+                        <p class="hero-desc">SkillLedger is the trust layer between TVETs, employers, and lenders. We
+                            capture real learning events and generate tamper-proof, portable Skills Profiles — no
+                            certificates, just proof.</p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="#" class="btn-primary">Explore Infrastructure <i
+                                    class="fas fa-arrow-right"></i></a>
+                            <a href="#" class="btn-outline">Read the Whitepaper</a>
+                        </div>
+                        <div class="quote" style="margin-top: 2rem;">
+                            <i class="fas fa-chart-line" style="color:#FFB347"></i> “You can fake one interview — you
+                            cannot fake 200 consistent learning events.”
+                        </div>
+                    </div>
+
+                    <div class="skill-card">
+                        <div class="profile-header">
+                            <div class="avatar">JK</div>
+                            <div>
+                                <div style="font-weight:700">Joel K. · Electrical Wiring</div>
+                                <div style="font-size:0.85rem; opacity:0.7;">ID: KE/TVET/00123</div>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
+                            <div><span class="score-big">87</span><span style="font-size:1rem">/100</span><br><span
+                                    style="font-size:0.85rem;">Skills Score · Mastery</span></div>
+                            <div class="trust-badge"><i class="fas fa-check-circle"></i> Trust Score 84 · Low Risk</div>
+                        </div>
+                        <div><span>Performance</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:92%"></div>
+                            </div>
+                        </div>
+                        <div><span>Behavioral (consistency, retries)</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:85%"></div>
+                            </div>
+                        </div>
+                        <div><span>Progress trend +4% weekly</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:78%"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;"><span
+                                style="background:#1e293b; padding:0.2rem 0.7rem; border-radius:2rem; font-size:0.7rem;">🔌
+                                Wiring</span><span
+                                style="background:#1e293b; padding:0.2rem 0.7rem; border-radius:2rem; font-size:0.7rem;">⚡
+                                Motor Control</span><span
+                                style="background:#1e293b; padding:0.2rem 0.7rem; border-radius:2rem; font-size:0.7rem;">📊
+                                147 events</span></div>
+                        <div
+                            style="margin-top:1.2rem; border-top:1px solid #2d3a5e; padding-top:1rem; font-size:0.8rem;">
+                            <i class="fas fa-link"></i> tamper-proof audit · real-time verification</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section-light">
+        <div class="container">
+            <div class="section-title">🇰🇪 Kenya’s skills trust gap</div>
+            <div style="max-width: 800px; margin:0 auto; text-align: center;">
+                <p style="font-size:1.2rem;">Certificates exist, but <span class="highlight">trust does not</span>. 38%
+                    youth unemployment coexists with critical skills shortages. Employers can’t verify ability. Lenders
+                    lack alternative data. Skilled youth stay invisible.</p>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">367k+</div>
+                        <div>TVET students (2023)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2,400+</div>
+                        <div>TVET institutions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15%</div>
+                        <div>EdTech platforms with accessibility</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Unity of Graduates, TVET, CBC & Talent Stories (Image-Rich) - with updated Kenyan-themed images -->
+    <section class="section-alt">
+        <div class="container">
+            <div class="section-title">From campus to career: every learner deserves to be seen</div>
+            <div class="story-grid fade-up">
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/2380794/pexels-photo-2380794.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="University graduates celebrating">
+                    <div class="story-caption">
+                        <div class="emoji-badge">🎓✨</div>
+                        <h3>University Graduate</h3>
+                        <p>“I had the degree, but no proof of my real skills. SkillLedger changed that — now employers
+                            trust what I can do.”</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="TVET students in practical workshop">
+                    <div class="story-caption">
+                        <div class="emoji-badge">🔧⚡</div>
+                        <h3>TVET Joy & Unity</h3>
+                        <p>Electrical, plumbing, welding — hands-on excellence finally verified. Our skills passport
+                            opens doors to dignified work.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/2774777/pexels-photo-2774777.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="Young CBC students in classroom">
+                    <div class="story-caption">
+                        <div class="emoji-badge">📚🌱</div>
+                        <h3>CBC Competency Builders</h3>
+                        <p>Kenya’s new curriculum promotes real competencies — SkillLedger becomes the infrastructure to
+                            measure and verify them.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/4144221/pexels-photo-4144221.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="Young tech creator">
+                    <div class="story-caption">
+                        <div class="emoji-badge">💻🎧</div>
+                        <h3>Digital Creatives & Innovators</h3>
+                        <p>Self-taught coders, designers, DJs — your skills are real. SkillLedger makes your talent
+                            bankable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regret & Joy: emotional duality with authentic images -->
+    <section class="section-light">
+        <div class="container">
+            <div class="section-title">The CV struggle vs. Verified skills freedom</div>
+            <div class="story-grid fade-up">
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/5900169/pexels-photo-5900169.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="Frustrated job seeker with CV">
+                    <div class="story-caption">
+                        <div class="emoji-badge">😞📄</div>
+                        <h3>“Another CV ignored”</h3>
+                        <p>Without proof, talent remains invisible. Regret piles up with every rejection due to
+                            untrusted credentials.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="Happy employed youth">
+                    <div class="story-caption">
+                        <div class="emoji-badge">🎉💼</div>
+                        <h3>“Hired on skills, not papers”</h3>
+                        <p>With a verifiable Skills Profile, employers trust and hire faster. That’s the power of
+                            SkillLedger.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <img class="story-img"
+                        src="https://images.pexels.com/photos/8464554/pexels-photo-8464554.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        alt="Diverse young Kenyan group">
+                    <div class="story-caption">
+                        <div class="emoji-badge">🤝🌟</div>
+                        <h3>Unity in Skills Economy</h3>
+                        <p>University, TVET, CBC, informal talents — all united by verified data. Together we close the
+                            trust gap.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution / Infrastructure -->
+    <section class="section-alt">
+        <div class="container">
+            <div class="section-title">What is SkillLedger?</div>
+            <div class="features-grid fade-up">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-database"></i></div>
+                    <h3>Data Infrastructure</h3>
+                    <p>API-first system that ingests learning events — practical tasks, assessments, project results —
+                        directly from institutions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-simple"></i></div>
+                    <h3>Behavioral Scoring</h3>
+                    <p>Performance (45%) + Behavioral (30%) + Validation (15%) + Progress (10%) = verifiable Skills
+                        Score.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Tamper‑Proof Trust Layer</h3>
+                    <p>Hash‑linked audit logs + idempotent ingestion → fintech-grade security for education data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bridge"></i></div>
+                    <h3>Portable Skills Passport</h3>
+                    <p>Employers reduce hiring risk; Lenders unlock 'Study Now, Pay Later' using Trust Score.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pilot Section with background image & joyful TVET imagery -->
+    <section class="section-light"
+        style="background-image: url('https://images.pexels.com/photos/159823/kitchen-cooking-steam-oven-159823.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; background-position: center; background-blend-mode: overlay; background-color: rgba(255,255,240,0.9);">
+        <div class="container">
+            <div class="section-title">Real-world pilot · Kawangware TVET</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+                <div
+                    style="flex:1; min-width: 250px; background: rgba(255,255,255,0.9); padding: 2rem; border-radius: 1.5rem;">
+                    <i class="fas fa-chalkboard-user" style="font-size:2rem; color:#FFB347"></i>
+                    <h3>50 Electrical students</h3>
+                    <p>8‑week pilot, 1,200+ learning events. Real-time scoring & employer matching.</p>
+                </div>
+                <div
+                    style="flex:1; min-width: 250px; background: rgba(255,255,255,0.9); padding: 2rem; border-radius: 1.5rem;">
+                    <i class="fas fa-chart-line" style="font-size:2rem; color:#FFB347"></i>
+                    <h3>Expected outcome</h3>
+                    <p>6–10 job placements · Verified interest from contractors · First lender signal</p>
+                </div>
+                <div
+                    style="flex:1; min-width: 250px; background: rgba(255,255,255,0.9); padding: 2rem; border-radius: 1.5rem;">
+                    <i class="fas fa-code-branch" style="font-size:2rem; color:#FFB347"></i>
+                    <h3>Scalable model</h3>
+                    <p>API integration works with existing Excel / school records. No new tools for teachers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why SkillLedger Wins (Dark) -->
+    <section class="section-dark">
+        <div class="container">
+            <div class="section-title">Why SkillLedger wins</div>
+            <div class="features-grid fade-up">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>Fintech‑grade architecture</h3>
+                    <p>Built by ex‑TrustLayer engineer (M‑Pesa escrow, audit logs, idempotency). Apply same trust layer
+                        to skills data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-simple"></i></div>
+                    <h3>Behavioral data > grades</h3>
+                    <p>Track consistency, retries, improvement curves — proven in top EdTech markets (China, Fenbi).
+                        Predicts real‑world performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>CBC ready</h3>
+                    <p>Kenya’s Competency-Based Curriculum generates data — but lacks infrastructure. SkillLedger is the
+                        missing data layer.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="#" class="btn-primary" id="demoBtn2">Partner with us <i class="fas fa-handshake"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics section -->
+    <section class="section-light">
+        <div class="container">
+            <div class="section-title">Built for scale, ready to pilot</div>
+            <div class="stats-grid" style="background: linear-gradient(120deg,#fff1e0, #ffffff);">
+                <div class="stat-item">
+                    <div class="stat-number">B2B2C</div>
+                    <div>Institutions pay per student | Employers subscribe | Lenders query API</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">📊 99.5%</div>
+                    <div>API uptime SLO • <500ms ingestion</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">🔗 Plaid for skills</div>
+                        <div>We don’t teach — we verify. Infrastructure, not app.</div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section
+        style="background: linear-gradient(135deg, #FFB347, #e67e22); color: #0f172a; text-align: center; padding: 5rem 0;">
+        <div class="container">
+            <h2 class="section-title" style="color:#0f172a; margin-bottom: 1rem;">Ready to verify skills, not
+                certificates?</h2>
+            <p style="font-size:1.2rem; margin-bottom:2rem;">Join the first cohort of TVETs using SkillLedger — apply
+                for the pilot or request early API access.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn-primary" id="finalCta"
+                    style="background:#0f172a; color:#FFB347; box-shadow:0 8px 16px rgba(0,0,0,0.2);">Get early access
+                    <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="btn-outline" style="border-color:#0f172a; color:#0f172a;">Read pilot report →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="logo"
+                style="margin-bottom:1rem; background: linear-gradient(135deg,#94a3b8,#FFB347); -webkit-background-clip:text; background-clip:text;">
+                Skill<span>Ledger</span></div>
+            <p>Skills Data Infrastructure — making ability visible, verifiable, and bankable.</p>
+            <p style="margin-top:1rem;">© 2026 SkillLedger. Built in Nairobi, Kenya. <i class="fas fa-globe-africa"></i>
+            </p>
+            <p style="margin-top:1rem;"><i class="fas fa-envelope"></i> hello@skillledger.ke | <i
+                    class="fab fa-github"></i> SkillLedger-Core</p>
+        </div>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('#ctaButton, #demoBtn2, #finalCta');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert("🚀 SkillLedger demo request: We'll contact you within 24h. Join our pilot at Kawangware TVET.");
+            });
+        });
+
+        function createParticles() {
+            const container = document.getElementById('particleContainer');
+            if (!container) return;
+            for (let i = 0; i < 70; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = Math.random() * 15 + 8 + 's';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        const fadeElements = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeElements.forEach(el => observer.observe(el));
+
+        const card = document.querySelector('.skill-card');
+        if (card) {
+            card.classList.add('fade-up');
+            observer.observe(card);
+        }
+    </script>
+</body>
+
+</html>
